@@ -42,6 +42,16 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
             rTV.setBackgroundColor(Color.rgb(valR, 0, 0));
             rTV.setText("R = " + valR);
         }
+        if (seekBar.getId() == R.id.gSeekBar) {
+            valG = seekBar.getProgress();
+            gTV.setBackgroundColor(Color.rgb(0, valG, 0));
+            gTV.setText("G = " + valG);
+        }
+        if (seekBar.getId() == R.id.bSeekBar) {
+            valB = seekBar.getProgress();
+            bTV.setBackgroundColor(Color.rgb(0, 0, valB));
+            bTV.setText("B = " + valB);
+        }
     }
 
     @Override
