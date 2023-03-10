@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ClipData;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, View.OnTouchListener {
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, View.OnTouchListener, View.OnDragListener {
 
     private int valR, valG, valB;
+
+    private int newR, newG, newB;
 
     private SeekBar rSB, gSB, bSB;
 
@@ -40,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         bTV.setOnTouchListener(this);
 
         resultTV = findViewById(R.id.resultTextView);
+        resultTV.setOnDragListener(this);
+
+        newR = 0;
+        newG = 0;
+        newB = 0;
     }
 
     @Override
@@ -81,5 +89,27 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean onDrag(View view, DragEvent dragEvent) {
+        switch (dragEvent.getAction()) {
+            case DragEvent.ACTION_DROP:
+                TextView textView = (TextView) dragEvent.getLocalState();
+                if (textView.getId() == R.id.rTextView) {
+                    newR = valR;
+                }
+                if (textView.getId() == R.id.gTextView) {
+                    newG = valG;
+                }
+                if (textView.getId() == R.id.bTextView) {
+                    newB = valB;
+                }
+
+                TextView container = (TextView) view;
+                container.setBackgroundColor(Color.rgb(newR, newG, newB));
+                break;
+        }
+        return true;
     }
 }
