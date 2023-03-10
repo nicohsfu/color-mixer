@@ -2,12 +2,15 @@ package com.example.colormixer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, View.OnTouchListener {
 
     private int valR, valG, valB;
 
@@ -31,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         rTV = findViewById(R.id.rTextView);
         gTV = findViewById(R.id.gTextView);
         bTV = findViewById(R.id.bTextView);
+
+        rTV.setOnTouchListener(this);
+        gTV.setOnTouchListener(this);
+        bTV.setOnTouchListener(this);
 
         resultTV = findViewById(R.id.resultTextView);
     }
@@ -62,5 +69,17 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            ClipData data = ClipData.newPlainText("", "");
+            View.DragShadowBuilder dragShadowBuilder = new View.DragShadowBuilder(view);
+            view.startDrag(data, dragShadowBuilder, view, 0);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
